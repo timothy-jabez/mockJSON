@@ -35,7 +35,7 @@ def generate_mock_JSON(N=1):
     result = []
     for k in range(N):
         interface_obj = {"id": random.randint(
-            0, 10), "name": gen_rand_string(5), "type": gen_rand_string(5)}
+            0, 10), "name": gen_rand_string(5), "type": "transport"}
 
         ip_addresses = []
         for x in range(random.randint(1, 5)):
@@ -50,7 +50,7 @@ def generate_mock_JSON(N=1):
             site_ids.append(random_with_N_digits(10))
 
         device_obj = {"id": random.randint(
-            0, 10), "name": gen_rand_string(5), "type": gen_rand_string(5), "vendor": "Cisco Systems",
+            0, 10), "name": gen_rand_string(5), "type": "router", "vendor": "Cisco Systems",
             "ipAddresses": ip_addresses, "location": location, "countryCode": None,
             "countryName": random.choice(["India", "China", "Sri Lanka", "Canada", "Germany"]),
             "regionCode": None, "regionName": None, "city": None, "siteIds": site_ids, "interface": interface_obj}
@@ -73,8 +73,13 @@ def generate_mock_JSON(N=1):
         for x in range(random.randint(1, 5)):
             sort.append(random_with_N_digits(10))
 
-        data = {"_index": "metric-samples_"+tenant_id, "_type": "_doc", "_id": uuid.uuid1().hex, "_version": random.randint(1, 100),
-                "_score": None, "sort": sort, "fields": fields_obj, "_source": _source_obj, }
+        doc_obj = {"_index": "metric-samples_"+tenant_id, "_type": "_doc", "_id": uuid.uuid1().hex, "_version": random.randint(1, 100),
+                   "_score": None, "sort": sort, "fields": fields_obj, "_source": _source_obj,
+                   "fieldRand": random.choice(["field1", "field2", "field3", "field4", "field5"]),
+                   "groupRand": random.choice(["group1", "group2", "group3", "group4", "group5"]),
+                   "attributeRand": random.choice(["attribute1", "attribute2", "attribute3", "attribute4", "attribute5"])}
+
+        data = {"type": "device", "doc": doc_obj}
 
         result.append(data)
 
